@@ -2,9 +2,11 @@ package com.srhdp.to_docompose.data.repositories
 
 import com.srhdp.to_docompose.data.TodoDao
 import com.srhdp.to_docompose.data.models.TodoTask
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@ViewModelScoped
 class TodoRepository @Inject constructor(private val todoDao: TodoDao) {
     val getAllTasks: Flow<List<TodoTask>> = todoDao.getAllTasks()
     val sortByLowPriority:Flow<List<TodoTask>> = todoDao.sortByLowPriority()
