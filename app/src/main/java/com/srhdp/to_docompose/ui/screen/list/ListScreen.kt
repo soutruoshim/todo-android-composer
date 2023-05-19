@@ -8,19 +8,29 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.srhdp.to_docompose.R
+import com.srhdp.to_docompose.ui.viewmodels.SharedViewModel
+import com.srhdp.to_docompose.util.SearchAppBarState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListScreen(
-    navigateToTaskScreen:(Int) -> Unit
+    navigateToTaskScreen:(Int) -> Unit,
+    sharedViewModel: SharedViewModel
 ){
+    val searchAppBarState:SearchAppBarState by sharedViewModel.searchAppBarState
+    val searchTextState:String by sharedViewModel.searchTextState
    Scaffold(
        topBar = {
-           ListAppBar()
+          ListAppBar(
+              sharedViewModel = sharedViewModel,
+              searchAppBarState = searchAppBarState,
+              searchTextState = searchTextState
+          )
        },
        content = {},
        floatingActionButton = {
@@ -36,10 +46,4 @@ fun ListFab(onFabClicked: (Int) -> Unit){
     }) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_button) )
     }
-}
-
-@Composable
-@Preview
-private fun ListScreenPreview(){
-    ListScreen(navigateToTaskScreen = {})
 }
