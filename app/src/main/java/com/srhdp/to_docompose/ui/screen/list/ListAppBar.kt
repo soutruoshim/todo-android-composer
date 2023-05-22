@@ -90,7 +90,7 @@ fun DefaultListAppBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = "Tasks")
+            Text(text = stringResource(id = R.string.title))
         },
         actions = {
             ListAppBarActions(
@@ -220,7 +220,7 @@ fun SearchAppBar(
             },
             placeholder = {
                 Text(
-                    text = "Search",
+                    text = stringResource(id = R.string.search),
                 )
             },
             textStyle = TextStyle(
