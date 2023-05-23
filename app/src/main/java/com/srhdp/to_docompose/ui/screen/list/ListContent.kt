@@ -21,28 +21,42 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.datastore.preferences.protobuf.Empty
 import com.srhdp.to_docompose.data.models.Priority
 import com.srhdp.to_docompose.data.models.TodoTask
 import com.srhdp.to_docompose.ui.theme.LARGE_PADDING
 import com.srhdp.to_docompose.ui.theme.PRIORITY_INDICATOR_SIZE
+import com.srhdp.to_docompose.util.RequestState
 
 @ExperimentalMaterial3Api
 @Composable
 fun ListContent(
-    tasks: List<TodoTask>,
+    tasks: RequestState<List<TodoTask>>,
     navigateToTaskScreen:(taskId:Int)->Unit
 ){
-   LazyColumn{
-       items(
-           items = tasks,
-           key = {task ->
-               task.id
-           }
-       ){
-           task ->
-           TaskItem(todoTask = task, navigateToTaskScreen = navigateToTaskScreen)
-       }
-   }
+    if(tasks is RequestState.Success){
+        if(tasks.data.isEmpty()){
+            EmptyContent()
+        }else{
+            DisplayTasks(tasks = tasks.data, navigateToTaskScreen = navigateToTaskScreen)
+        }
+    }
+}
+
+@Composable
+fun DisplayTasks(  tasks: List<TodoTask>,
+                   navigateToTaskScreen:(taskId:Int)->Unit){
+    LazyColumn{
+        items(
+            items = tasks,
+            key = {task ->
+                task.id
+            }
+        ){
+                task ->
+            TaskItem(todoTask = task, navigateToTaskScreen = navigateToTaskScreen)
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
