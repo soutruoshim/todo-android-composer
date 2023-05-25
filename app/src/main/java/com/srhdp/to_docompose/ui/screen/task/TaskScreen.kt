@@ -6,6 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.srhdp.to_docompose.data.models.Priority
 import com.srhdp.to_docompose.data.models.TodoTask
 import com.srhdp.to_docompose.ui.viewmodels.SharedViewModel
 import com.srhdp.to_docompose.util.Action
@@ -21,7 +22,14 @@ fun TaskScreen(selectedTask: TodoTask?, navigateToListScreens: (Action) -> Unit)
             Box(
                 modifier = Modifier.padding(it)
             ) {
-
+                TaskContent(
+                    title = "Title",
+                    onTitleChange = {},
+                    description = "",
+                    onDescriptionChange = {},
+                    priority = Priority.LOW,
+                    onPrioritySelected = {}
+                )
             }
         }
     )
