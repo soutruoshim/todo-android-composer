@@ -55,7 +55,6 @@ fun TaskContent(
             onValueChange = {onDescriptionChange(it)},
             label = { Text(text = "Description")},
             textStyle = MaterialTheme.typography.bodyMedium,
-            singleLine = true
         )
     }
 }
@@ -65,7 +64,9 @@ fun TaskContent(
 fun PriorityDropDownPreview() {
     TaskContent(
         title = "Title",
-        onTitleChange = {},
+        onTitleChange = {
+
+        },
         description = "",
         onDescriptionChange = {},
         priority = Priority.LOW,

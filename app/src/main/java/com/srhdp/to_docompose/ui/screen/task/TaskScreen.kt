@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.srhdp.to_docompose.data.models.Priority
 import com.srhdp.to_docompose.data.models.TodoTask
@@ -13,7 +14,12 @@ import com.srhdp.to_docompose.util.Action
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskScreen(selectedTask: TodoTask?, navigateToListScreens: (Action) -> Unit){
+fun TaskScreen(selectedTask: TodoTask?, sharedViewModel: SharedViewModel, navigateToListScreens: (Action) -> Unit){
+    val title:String by sharedViewModel.title
+    val priority:Priority by sharedViewModel.priority
+    val description:String by sharedViewModel.description
+
+
     Scaffold (
         topBar = {
               TaskAppBar(selectedTask = selectedTask,  navigateToListScreens = navigateToListScreens)
@@ -23,12 +29,16 @@ fun TaskScreen(selectedTask: TodoTask?, navigateToListScreens: (Action) -> Unit)
                 modifier = Modifier.padding(it)
             ) {
                 TaskContent(
-                    title = "Title",
-                    onTitleChange = {},
-                    description = "",
-                    onDescriptionChange = {},
-                    priority = Priority.LOW,
-                    onPrioritySelected = {}
+                    title = title,
+                    onTitleChange = {sharedViewModel.title.value = it},
+                    description = description,
+                    onDescriptionChange = {
+                                    sharedViewModel.description.value = it
+                    },
+                    priority = priority,
+                    onPrioritySelected = {
+                        sharedViewModel.priority.value = it
+                    }
                 )
             }
         }
