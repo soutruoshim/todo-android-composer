@@ -81,13 +81,13 @@ fun CloseAction(onCloseClicked: (Action) -> Unit) {
 
 @Composable
 fun DeleteAction(onDeleteClicked: (Action) -> Unit) {
-    IconButton(onClick = { onDeleteClicked(Action.NO_ACTION) }) {
+    IconButton(onClick = { onDeleteClicked(Action.DELETE) }) {
         Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
     }
 }
 @Composable
 fun UpdateAction(onUpdateClicked: (Action) -> Unit) {
-    IconButton(onClick = { onUpdateClicked(Action.NO_ACTION) }) {
+    IconButton(onClick = { onUpdateClicked(Action.UPDATE) }) {
         Icon(imageVector = Icons.Filled.Check, contentDescription = "Update")
     }
 }

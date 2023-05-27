@@ -32,6 +32,8 @@ class SharedViewModel @Inject constructor (private val repository: TodoRepositor
      val searchAppBarState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
      val searchTextState : MutableState<String>  = mutableStateOf("")
 
+    private val _searchTasks = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
+    val searchedTasks:StateFlow<RequestState<List<TodoTask>>> = _searchTasks
 
     private val _allTasks = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
     val allTasks:StateFlow<RequestState<List<TodoTask>>> = _allTasks
@@ -48,6 +50,22 @@ class SharedViewModel @Inject constructor (private val repository: TodoRepositor
            _allTasks.value = RequestState.Error(e)
         }
 
+    }
+
+    fun searchDatabase(searchQuery:String){
+        _searchTasks.value = RequestState.Loading
+        try {
+              viewModelScope.launch {
+                  repository.searchDatabase(searchQuery = "%$searchQuery%")
+                      .collect{ searchedTasks ->
+                          _searchTasks.value = RequestState.Success(searchedTasks)
+                      }
+              }
+        }catch (e:Exception){
+            _searchTasks.value = RequestState.Error(e)
+        }
+
+        searchAppBarState.value = SearchAppBarState.TRIGGERED
     }
 
     private val _selectedTask : MutableStateFlow<TodoTask?> = MutableStateFlow(null)
@@ -71,16 +89,39 @@ class SharedViewModel @Inject constructor (private val repository: TodoRepositor
         }
     }
 
+    private fun updateTask(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val toDoTask = TodoTask(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.updateTask(toDoTask)
+        }
+    }
+    private fun deleteTask(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val toDoTask = TodoTask(
+                id = id.value,
+                title = title.value,
+                description = description.value,
+                priority = priority.value
+            )
+            repository.deleteTask(toDoTask)
+        }
+    }
+
     fun handleDatabaseAction(action:Action){
         when(action){
             Action.ADD ->{
                 addTask()
             }
             Action.UPDATE ->{
-
+                updateTask()
             }
             Action.DELETE ->{
-
+                deleteTask()
             }
             Action.DELETE_ALL ->{
 
