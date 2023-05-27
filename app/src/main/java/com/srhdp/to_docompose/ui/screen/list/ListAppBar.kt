@@ -42,6 +42,7 @@ import com.srhdp.to_docompose.components.PriorityItem
 import com.srhdp.to_docompose.ui.theme.LARGE_PADDING
 import com.srhdp.to_docompose.ui.theme.TOP_APP_BAR_HEIGHT
 import com.srhdp.to_docompose.ui.viewmodels.SharedViewModel
+import com.srhdp.to_docompose.util.Action
 import com.srhdp.to_docompose.util.SearchAppBarState
 import com.srhdp.to_docompose.util.TrailingIconState
 
@@ -59,7 +60,9 @@ fun ListAppBar(
 
                 },
                 onSortClick = {},
-                onDeleteClicked = {},
+                onDeleteAllClicked = {
+                    sharedViewModel.action.value = Action.DELETE_ALL
+                },
             )
         }
 
@@ -88,7 +91,7 @@ fun ListAppBar(
 fun DefaultListAppBar(
     onSearchClick: () -> Unit,
     onSortClick: (Priority) -> Unit,
-    onDeleteClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -98,7 +101,7 @@ fun DefaultListAppBar(
             ListAppBarActions(
                 onSearchClick = onSearchClick,
                 onSortClick = onSortClick,
-                onDeleteClicked = onDeleteClicked
+                onDeleteAllClicked = onDeleteAllClicked
             )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
@@ -109,13 +112,13 @@ fun DefaultListAppBar(
 fun ListAppBarActions(
     onSearchClick: () -> Unit,
     onSortClick: (Priority) -> Unit,
-    onDeleteClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit
 ) {
     SearchAction(
         onSearchClick = onSearchClick
     )
     SortAction(onSortClick = onSortClick)
-    DeleteAllAction(onDeleteClicked = onDeleteClicked)
+    DeleteAllAction(onDeleteClicked = onDeleteAllClicked)
 }
 
 @Composable
