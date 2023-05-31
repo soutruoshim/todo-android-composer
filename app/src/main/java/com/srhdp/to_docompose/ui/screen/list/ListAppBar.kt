@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.srhdp.to_docompose.components.DisplayAlertDialog
 import com.srhdp.to_docompose.components.PriorityItem
 import com.srhdp.to_docompose.ui.theme.LARGE_PADDING
 import com.srhdp.to_docompose.ui.theme.TOP_APP_BAR_HEIGHT
@@ -114,11 +115,28 @@ fun ListAppBarActions(
     onSortClick: (Priority) -> Unit,
     onDeleteAllClicked: () -> Unit
 ) {
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    DisplayAlertDialog(
+        title = stringResource(id = R.string.delete_task_all),
+        message = stringResource(id = R.string.delete_task_all_confirm),
+        openDialog = openDialog,
+        closeDialog = {
+            openDialog = false
+        },
+        onYesClicked = {
+            onDeleteAllClicked()
+            openDialog = false
+        }
+    )
+
     SearchAction(
         onSearchClick = onSearchClick
     )
     SortAction(onSortClick = onSortClick)
-    DeleteAllAction(onDeleteClicked = onDeleteAllClicked)
+    DeleteAllAction(onDeleteClicked = {openDialog = true})
 }
 
 @Composable

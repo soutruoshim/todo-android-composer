@@ -5,6 +5,11 @@
     <string name="sort_tasks">Sort Tasks</string>
     <string name="delete_all">Delete All</string>
     <string name="title">Tasks</string>
-    <string name="search">"Search"</string>
+    <string name="search">Search</string>
+    <string name="delete_task">Remove \'%1$s\'?</string>
+    <string name="delete_task_all">Remove all?</string>
+    <string name="delete_task_confirm">Are you want to remove \'%1$s\'?</string>
+    <string name="delete_task_all_confirm">Are you want to remove all you can\'t go back ?</string>
+
 
 </resources>
