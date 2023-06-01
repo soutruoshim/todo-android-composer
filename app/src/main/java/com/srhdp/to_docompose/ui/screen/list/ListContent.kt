@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.datastore.preferences.protobuf.Empty
 import com.srhdp.to_docompose.data.models.Priority
 import com.srhdp.to_docompose.data.models.TodoTask
 import com.srhdp.to_docompose.ui.theme.LARGE_PADDING
@@ -34,17 +33,38 @@ import com.srhdp.to_docompose.util.SearchAppBarState
 fun ListContent(
     allTasks: RequestState<List<TodoTask>>,
     searchedTasks: RequestState<List<TodoTask>>,
+    lowPriorityTasks: List<TodoTask>,
+    highPriorityTasks: List<TodoTask>,
+    sortState: RequestState<Priority>,
     searchAppBarState: SearchAppBarState,
     navigateToTaskScreen:(taskId:Int)->Unit
 ){
-    if(searchAppBarState == SearchAppBarState.TRIGGERED){
-        if(searchedTasks is RequestState.Success){
-            HandleListContent(tasks = searchedTasks.data, navigateToTaskScreen = navigateToTaskScreen)
+    if(sortState is RequestState.Success){
+        when{
+            searchAppBarState == SearchAppBarState.TRIGGERED -> {
+                if (searchedTasks is RequestState.Success) {
+                    HandleListContent(
+                        tasks = searchedTasks.data,
+                        navigateToTaskScreen = navigateToTaskScreen
+                    )
+                }
+            }
+            sortState.data == Priority.NONE -> {
+                if(allTasks is RequestState.Success){
+                    HandleListContent(tasks = allTasks.data, navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
+            sortState.data == Priority.LOW -> {
+                    HandleListContent(tasks = lowPriorityTasks, navigateToTaskScreen = navigateToTaskScreen)
+            }
+            sortState.data == Priority.HIGH -> {
+                    HandleListContent(tasks = highPriorityTasks, navigateToTaskScreen = navigateToTaskScreen)
+            }
         }
-    }else{
-        if(allTasks is RequestState.Success){
-            HandleListContent(tasks = allTasks.data, navigateToTaskScreen = navigateToTaskScreen)
-        }
+
+
+
+
     }
 
 }
